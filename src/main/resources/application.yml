@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:mysql://${MYSQL_IP}:${MYSQL_PORT}/javeriana
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PWD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
