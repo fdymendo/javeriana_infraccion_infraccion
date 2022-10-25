@@ -7,7 +7,6 @@ Project for the Javerian University
 Requirements to implement the database
 
 * Database: Mysql 5.7
-* Port Database: 3306
 * Database: Schemas must be created, with test data.
 * User: user with insert and update permissions in the schema
 * Port microservice: 8081
