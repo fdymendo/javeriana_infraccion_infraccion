@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/")
-class OKController(val iUserService: IInfractionService) {
+class OKController {
 
     @GetMapping
     fun saveInfraction() = ResponseEntity.ok()
