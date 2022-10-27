@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/infracciones")
 class OKController {
     @GetMapping
     fun saveInfraction() = ResponseEntity.ok()
