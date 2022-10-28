@@ -7,7 +7,7 @@ import java.util.*
 
 data class InfractionDTO(
     @JsonProperty("id") val id: String?,
-    @JsonProperty("vehicle") val vehicle: VehicleEntity,
+    @JsonProperty("vehicle") val vehicle: VehicleDTO,
     @JsonProperty("expirationDate") val expirationDate: Date?,
     @JsonProperty("createDate") val createDate: Date?,
     @JsonProperty("updateDate") val updateDate: Date?,
@@ -16,7 +16,7 @@ data class InfractionDTO(
 fun InfractionDTO.toEntity() = InfractionEntity(
     id = this.id ?: UUID.randomUUID().toString(),
     vehicle = VehicleEntity(
-        id = this.vehicle.id,
+        id = this.vehicle.id ?: UUID.randomUUID().toString(),
         userId = this.vehicle.userId ?: "",
         plate = this.vehicle.plate ?: "",
         createDate = this.vehicle.createDate,

@@ -13,5 +13,7 @@ class InfractionController(val iUserService: IInfractionService) {
 
     @PostMapping
     fun saveInfraction(@RequestBody infraction: InfractionDTO) = iUserService.saveItem(infraction)
+    @PostMapping("/placa")
+    fun saveInfractionPlate(@RequestBody infraction: InfractionDTO) = iUserService.saveItemPlate(infraction)
 
 }
