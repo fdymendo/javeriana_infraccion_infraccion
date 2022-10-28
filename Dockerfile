@@ -1,5 +1,5 @@
 FROM amazoncorretto:17-alpine-jdk as builder
 WORKDIR application
-ARG JAR_FILE=gradle/wrapper/*.jar
+ARG JAR_FILE=build/libs/infracciones-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} application.jar
 ENTRYPOINT ["java","-jar", "application.jar"]
