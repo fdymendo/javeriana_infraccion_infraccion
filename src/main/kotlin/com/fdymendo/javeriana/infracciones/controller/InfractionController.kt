@@ -5,7 +5,7 @@ import com.fdymendo.javeriana.infracciones.service.IInfractionService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/infraction/v1")
+@RequestMapping("/infraccion/v1")
 class InfractionController(val iUserService: IInfractionService) {
 
     @GetMapping("/{id}")
