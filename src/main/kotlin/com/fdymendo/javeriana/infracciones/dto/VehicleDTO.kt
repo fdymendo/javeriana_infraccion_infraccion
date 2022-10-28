@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 data class VehicleDTO(
-    @JsonProperty("id") val id: String,
+    @JsonProperty("id") val id: String?,
     @JsonProperty("name") val userId: String?,
     @JsonProperty("plate") val plate: String?,
     @JsonProperty("createDate") val createDate: Date?,

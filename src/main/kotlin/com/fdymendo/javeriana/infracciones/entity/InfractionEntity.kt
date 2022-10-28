@@ -19,7 +19,7 @@ data class InfractionEntity(
 
 fun InfractionEntity.toDTO() = InfractionDTO(
     id = this.id,
-    vehicle = VehicleEntity(
+    vehicle = VehicleDTO(
         id = this.vehicle.id,
         userId = this.vehicle.userId ?: "",
         plate = this.vehicle.plate ?: "",
