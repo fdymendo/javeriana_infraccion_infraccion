@@ -1,5 +1,5 @@
 {
-    "executionRoleArn": "arn:aws:iam::006078069859:role/AWSServiceRoleForECS",
+    "executionRoleArn": "arn:aws:iam::006078069859:role/ecsTaskExecutionRole",
     "containerDefinitions": [
       {
         "logConfiguration": {
@@ -88,7 +88,7 @@
     ],
     "placementConstraints": [],
     "memory": "1024",
-    "taskRoleArn": "arn:aws:iam::006078069859:role/AWSServiceRoleForECS",
+    "taskRoleArn": "arn:aws:iam::006078069859:role/ecsTaskExecutionRole",
   
     "family": "task-eaesof-infracciones",
     "requiresCompatibilities": [
