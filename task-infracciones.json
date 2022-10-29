@@ -12,14 +12,31 @@
         },
         "portMappings": [
           {
-            "hostPort": 80,
+            "hostPort": 8081,
             "protocol": "tcp",
-            "containerPort": 80
+            "containerPort": 8081
           }
         ],
         
         "cpu": 0,
-        "environment": [],
+        "environment": [
+          {
+            "name": "MYSQL_IP",
+            "value": "carroya-eaesof.cw8wuioquzwa.us-east-1.rds.amazonaws.com"
+          },
+          {
+            "name": "MYSQL_PORT",
+            "value": "3306"
+          },
+          {
+            "name": "MYSQL_USER",
+            "value": "carroya"
+          },
+          {
+            "name": "MYSQL_PWD",
+            "value": "CarroyaRecargado"
+          }
+        ],
         "mountPoints": [],
         "volumesFrom": [],
         "image": "006078069859.dkr.ecr.us-east-1.amazonaws.com/infracciones-eaesof:infracciones",
@@ -45,7 +62,7 @@
         "mountPoints": [],
         "memory": 500,
         "volumesFrom": [],
-        "image": "006078069859.dkr.ecr.us-east-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod",
+        "image": "840364872350.dkr.ecr.us-east-1.amazonaws.com/aws-appmesh-envoy:v1.23.1.0-prod",
           "logConfiguration": {
                   "logDriver": "awslogs",
                   "options": {
@@ -89,7 +106,7 @@
         },
         {
           "name": "AppPorts",
-          "value": "9057"
+          "value": "8081"
         },
         {
           "name": "EgressIgnoredIPs",
@@ -101,7 +118,7 @@
         },
         {
           "name": "EgressIgnoredPorts",
-          "value": "8899,27017"
+          "value": ""
         },
         {
           "name": "IgnoredUID",
