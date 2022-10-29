@@ -1,0 +1,117 @@
+{
+    "executionRoleArn": "arn:aws:iam::006078069859:role/AWSServiceRoleForECS",
+    "containerDefinitions": [
+      {
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/task-eaesof-infracciones",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        },
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "protocol": "tcp",
+            "containerPort": 80
+          }
+        ],
+        
+        "cpu": 0,
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "image": "006078069859.dkr.ecr.us-east-1.amazonaws.com/infracciones-eaesof:infracciones",
+        "dependsOn": [
+          {
+            "containerName": "envoy",
+            "condition": "HEALTHY"
+          }
+        ],
+        "essential": true,
+        "name": "cont-eaesof-infracciones"
+      },
+      {
+        "portMappings": [],
+         "cpu": 0,
+        "environment": [
+          {
+            "name": "APPMESH_VIRTUAL_NODE_NAME",
+            "value": "mesh/eaesof/virtualNode/infracciones"
+            
+          }
+        ],
+        "mountPoints": [],
+        "memory": 500,
+        "volumesFrom": [],
+        "image": "006078069859.dkr.ecr.us-east-1.amazonaws.com/aws-appmesh-envoy:v1.19.1.0-prod",
+          "logConfiguration": {
+                  "logDriver": "awslogs",
+                  "options": {
+                      "awslogs-group": "/ecs/task-eaesof-infracciones",
+                      "awslogs-region": "us-east-1",
+                      "awslogs-stream-prefix": "ecs"
+                  }
+              },
+        "healthCheck": {
+          "retries": 3,
+          "command": [
+            "CMD-SHELL",
+            "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+          ],
+          "timeout": 2,
+          "interval": 5,
+          "startPeriod": 10
+        },
+        "essential": true,
+        "user": "1337",
+        "name": "envoy"
+      }
+    ],
+    "placementConstraints": [],
+    "memory": "1024",
+    "taskRoleArn": "arn:aws:iam::006078069859:role/AWSServiceRoleForECS",
+  
+    "family": "task-eaesof-infracciones",
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "proxyConfiguration": {
+      "type": "APPMESH",
+      "containerName": "envoy",
+      "properties": [
+        {
+          "name": "ProxyIngressPort",
+          "value": "15000"
+        },
+        {
+          "name": "AppPorts",
+          "value": "9057"
+        },
+        {
+          "name": "EgressIgnoredIPs",
+          "value": "169.254.170.2,169.254.169.254"
+        },
+        {
+          "name": "IgnoredGID",
+          "value": ""
+        },
+        {
+          "name": "EgressIgnoredPorts",
+          "value": "8899,27017"
+        },
+        {
+          "name": "IgnoredUID",
+          "value": "1337"
+        },
+        {
+          "name": "ProxyEgressPort",
+          "value": "15001"
+        }
+      ]
+    },
+    "volumes": []
+  }
