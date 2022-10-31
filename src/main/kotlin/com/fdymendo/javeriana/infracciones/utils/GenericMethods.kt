@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity
 
 class GenericMethods {
     companion object {
-        fun responseOk(): ResponseEntity<ResponseDefault> {
-            return ResponseEntity.ok().body(null)
+        fun responseOk(): ResponseEntity<String> {
+            return ResponseEntity.ok().body(HttpStatus.OK.reasonPhrase)
         }
         fun responseOk(responseDefault: ResponseDefault): ResponseEntity<ResponseDefault> {
             return ResponseEntity.ok(responseDefault)
