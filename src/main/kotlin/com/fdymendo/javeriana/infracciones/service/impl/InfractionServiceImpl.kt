@@ -1,11 +1,15 @@
 package com.fdymendo.javeriana.infracciones.service.impl
 
 import com.fdymendo.javeriana.infracciones.dto.InfractionDTO
+import com.fdymendo.javeriana.infracciones.dto.ParkingLotDTO
 import com.fdymendo.javeriana.infracciones.dto.toEntity
 import com.fdymendo.javeriana.infracciones.entity.InfractionEntity
+import com.fdymendo.javeriana.infracciones.entity.ParkingLotEntity
+import com.fdymendo.javeriana.infracciones.entity.TypeInfractionEntity
 import com.fdymendo.javeriana.infracciones.entity.toDTO
 import com.fdymendo.javeriana.infracciones.model.ResponseDefault
 import com.fdymendo.javeriana.infracciones.repository.InfractionRepository
+import com.fdymendo.javeriana.infracciones.repository.ParkingLoteRepository
 import com.fdymendo.javeriana.infracciones.repository.VehicleRepository
 import com.fdymendo.javeriana.infracciones.service.ACrudServiceTemplate
 import com.fdymendo.javeriana.infracciones.service.IInfractionService
@@ -19,7 +23,8 @@ import java.util.*
 @Service
 class InfractionServiceImpl(
     private val infractionRepository: InfractionRepository,
-    private val vehicleRepository: VehicleRepository
+    private val vehicleRepository: VehicleRepository,
+    private val parkingLoteRepository: ParkingLoteRepository
 ) :
     ACrudServiceTemplate<InfractionRepository, InfractionEntity>(infractionRepository), IInfractionService {
 
@@ -38,9 +43,23 @@ class InfractionServiceImpl(
     override fun saveItemPlate(item: InfractionDTO): ResponseEntity<ResponseDefault> {
         item.vehicle.plate?.let {
             val vehicle = vehicleRepository.getByPlate(it)
+            //buscar parkinglot
             val itemToSave = InfractionEntity(
                 id = UUID.randomUUID().toString(),
                 vehicle = vehicle,
+                parkingLot=  ParkingLotEntity(
+                    id = item.parkingLot.id,
+                    name = item.parkingLot.name,
+                    address = item.parkingLot.address,
+                ),
+                typeInfraction = TypeInfractionEntity(
+                    id = item.typeInfraction.id,
+                    code = item.typeInfraction.code,
+                    detail = item.typeInfraction.detail,
+                    smdlv = item.typeInfraction.smdlv,
+                    value = item.typeInfraction.value,
+                    immobilization = item.typeInfraction.immobilization
+                ),
                 expirationDate = generateExpiration(),
                 createDate = Date(),
                 updateDate = Date()
