@@ -12,6 +12,7 @@ data class InfractionDTO(
     @JsonProperty("vehicle") val vehicle: VehicleDTO,
     @JsonProperty("parkingLot") val parkingLot: ParkingLotDTO,
     @JsonProperty("typeInfraction") val typeInfraction: TypeInfractionDTO,
+    @JsonProperty("user") var user: UserDTO?,
     @JsonProperty("expirationDate") val expirationDate: Date?,
     @JsonProperty("createDate") val createDate: Date?,
     @JsonProperty("updateDate") val updateDate: Date?,
@@ -22,7 +23,7 @@ fun InfractionDTO.toEntity() = InfractionEntity(
     vehicle = VehicleEntity(
         id = this.vehicle.id ?: UUID.randomUUID().toString(),
         userId = this.vehicle.userId ?: "",
-        plate = this.vehicle.plate ?: "",
+        plate = this.vehicle.plate,
         createDate = this.vehicle.createDate,
         updateDate = this.vehicle.updateDate
     ),

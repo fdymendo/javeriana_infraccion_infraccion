@@ -13,11 +13,10 @@ interface ICrudTemplate<T> {
      * @return retorna el objeto guardado
      */
     fun saveItem(item: T): ResponseEntity<ResponseDefault>
-    fun saveItemPlate(item: T): ResponseEntity<ResponseDefault>
 
     @Throws(ApplicationException::class)
     fun updateItem(item: T, id: String): ResponseEntity<ResponseDefault>
     fun deleteItem(id: String): ResponseEntity<ResponseDefault>
     fun getItem(id: String): ResponseEntity<ResponseDefault>
-    val allItems: ResponseEntity<Any>
+    fun allItems(): ResponseEntity<ResponseDefault>
 }
