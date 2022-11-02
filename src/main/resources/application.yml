@@ -10,3 +10,11 @@ spring:
     username: ${MYSQL_USER}
     password: ${MYSQL_PWD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+api:
+  internal:
+    services:
+      users:
+        ip: ${SER_USER_IP}:${SER_USER_PORT}
+        path:
+          create: /usuarios/v1
+          getUser: /usuarios/v1

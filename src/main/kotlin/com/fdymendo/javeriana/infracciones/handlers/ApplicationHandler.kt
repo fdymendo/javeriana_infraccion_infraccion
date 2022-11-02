@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
+import javax.persistence.EntityNotFoundException
 
 
 @ControllerAdvice
@@ -37,6 +38,15 @@ class ApplicationHandler {
     @ExceptionHandler(EmptyResultDataAccessException::class)
     fun exceptionFound(
         ex: EmptyResultDataAccessException,
+        request: WebRequest?
+    ): ResponseEntity<ResponseDefault> {
+        log.warn(ex.message)
+        return GenericMethods.responseBadRequest()
+    }
+
+    @ExceptionHandler(EntityNotFoundException::class)
+    fun exceptionNotFoundItem(
+        ex: EntityNotFoundException,
         request: WebRequest?
     ): ResponseEntity<ResponseDefault> {
         log.warn(ex.message)

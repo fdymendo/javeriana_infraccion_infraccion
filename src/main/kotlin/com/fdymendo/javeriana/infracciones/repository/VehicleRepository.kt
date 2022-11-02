@@ -4,5 +4,5 @@ import com.fdymendo.javeriana.infracciones.entity.VehicleEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface VehicleRepository : JpaRepository<VehicleEntity, String> {
-    fun getByPlate(plate: String): VehicleEntity
+    fun getByPlate(plate: String): VehicleEntity?
 }

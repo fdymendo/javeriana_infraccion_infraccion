@@ -1,5 +1,7 @@
 package com.fdymendo.javeriana.infracciones.entity
 
+import com.fdymendo.javeriana.infracciones.dto.VehicleDTO
+import com.fdymendo.javeriana.infracciones.dto.toEntity
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -11,7 +13,15 @@ data class VehicleEntity(
     @Id
     val id: String,
     val userId: String?,
-    val plate: String?,
+    val plate: String,
     val createDate: Date?,
     val updateDate: Date?
+)
+
+fun VehicleEntity.toDTO() = VehicleDTO(
+    id = this.id,
+    userId = this.userId,
+    plate = this.plate,
+    createDate = this.createDate,
+    updateDate = this.updateDate
 )
