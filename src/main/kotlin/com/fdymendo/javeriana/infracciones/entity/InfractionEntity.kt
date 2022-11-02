@@ -1,9 +1,7 @@
 package com.fdymendo.javeriana.infracciones.entity
 
-import com.fdymendo.javeriana.infracciones.dto.InfractionDTO
-import com.fdymendo.javeriana.infracciones.dto.ParkingLotDTO
-import com.fdymendo.javeriana.infracciones.dto.TypeInfractionDTO
-import com.fdymendo.javeriana.infracciones.dto.VehicleDTO
+import com.fdymendo.javeriana.infracciones.dto.*
+import org.apache.catalina.User
 import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -30,7 +28,7 @@ fun InfractionEntity.toDTO() = InfractionDTO(
     vehicle = VehicleDTO(
         id = this.vehicle.id,
         userId = this.vehicle.userId ?: "",
-        plate = this.vehicle.plate ?: "",
+        plate = this.vehicle.plate ,
         createDate = this.vehicle.createDate,
         updateDate = this.vehicle.updateDate
     ),
@@ -49,5 +47,7 @@ fun InfractionEntity.toDTO() = InfractionDTO(
     ),
     expirationDate = this.expirationDate,
     createDate = this.createDate,
-    updateDate = this.updateDate
+    updateDate = this.updateDate,
+    user = null
+
 )

@@ -19,3 +19,5 @@ Environment variables to start the microservice
 * MYSQL_PORT: port of database
 * MYSQL_USER: user of database
 * MYSQL_PWD: PWD of database
+* SER_USER_IP: ip microservices users ej: http://localhost
+* SER_USER_PORT: port microservices users
