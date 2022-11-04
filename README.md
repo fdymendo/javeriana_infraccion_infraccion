@@ -1,6 +1,6 @@
 # Javeriana infraccion - Infraccion
 
-Project for the Javerian University
+Project for the Javeriana University
 
 ### Database restrictions
 
