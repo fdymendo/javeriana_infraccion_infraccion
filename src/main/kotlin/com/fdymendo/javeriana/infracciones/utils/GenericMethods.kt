@@ -1,5 +1,6 @@
 package com.fdymendo.javeriana.infracciones.utils
 
+import com.fdymendo.javeriana.infracciones.entity.TypePlateEntity
 import com.fdymendo.javeriana.infracciones.handlers.ApplicationException
 import com.fdymendo.javeriana.infracciones.model.ResponseDefault
 import com.fdymendo.javeriana.infracciones.model.ResponseError
@@ -12,6 +13,7 @@ class GenericMethods {
         fun responseOk(): ResponseEntity<String> {
             return ResponseEntity.ok().body(HttpStatus.OK.reasonPhrase)
         }
+
         fun responseOk(responseDefault: ResponseDefault): ResponseEntity<ResponseDefault> {
             return ResponseEntity.ok(responseDefault)
         }
@@ -37,6 +39,17 @@ class GenericMethods {
 
         fun responseBadRequest(): ResponseEntity<ResponseDefault> {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
+        }
+
+        fun typePlate(plate: String): TypePlateEntity {
+            return when (plate.substring(0,1)) {
+                "B" -> TypePlateEntity("2", "Comercial")
+                "D" -> TypePlateEntity("3", "Diplomatico")
+                "R" -> TypePlateEntity("4", "Remolque")
+                "M" -> TypePlateEntity("5", "Misión especial")
+                "A" -> TypePlateEntity("6", "Auto antiguo")
+                else -> TypePlateEntity("1", "Particular")
+            }
         }
     }
 }

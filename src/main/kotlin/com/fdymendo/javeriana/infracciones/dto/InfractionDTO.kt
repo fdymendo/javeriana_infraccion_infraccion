@@ -5,6 +5,7 @@ import com.fdymendo.javeriana.infracciones.entity.VehicleEntity
 import com.fdymendo.javeriana.infracciones.entity.InfractionEntity
 import com.fdymendo.javeriana.infracciones.entity.ParkingLotEntity
 import com.fdymendo.javeriana.infracciones.entity.TypeInfractionEntity
+import com.fdymendo.javeriana.infracciones.utils.GenericMethods
 import java.util.*
 
 data class InfractionDTO(
@@ -24,6 +25,7 @@ fun InfractionDTO.toEntity() = InfractionEntity(
         id = this.vehicle.id ?: UUID.randomUUID().toString(),
         userId = this.vehicle.userId ?: "",
         plate = this.vehicle.plate,
+        typePlate = GenericMethods.typePlate(this.vehicle.plate),
         createDate = this.vehicle.createDate,
         updateDate = this.vehicle.updateDate
     ),
