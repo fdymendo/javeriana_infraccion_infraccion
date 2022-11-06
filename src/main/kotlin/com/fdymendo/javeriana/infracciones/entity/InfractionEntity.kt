@@ -1,5 +1,6 @@
 package com.fdymendo.javeriana.infracciones.entity
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fdymendo.javeriana.infracciones.dto.*
 import org.apache.catalina.User
 import java.util.*
@@ -28,7 +29,11 @@ fun InfractionEntity.toDTO() = InfractionDTO(
     vehicle = VehicleDTO(
         id = this.vehicle.id,
         userId = this.vehicle.userId ?: "",
-        plate = this.vehicle.plate ,
+        plate = this.vehicle.plate,
+        typePlate = TypePlateDTO(
+            id = this.vehicle.typePlate.id,
+            name = this.vehicle.typePlate.name
+        ),
         createDate = this.vehicle.createDate,
         updateDate = this.vehicle.updateDate
     ),
