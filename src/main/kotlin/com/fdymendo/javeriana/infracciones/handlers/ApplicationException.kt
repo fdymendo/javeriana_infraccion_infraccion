@@ -14,9 +14,6 @@ class ApplicationException(e: Exception?, message: String, httpStatus: HttpStatu
 
     fun getHttpStatus() = httpStatus
     companion object {
-        /**
-         *
-         */
         private const val serialVersionUID = 1L
     }
 

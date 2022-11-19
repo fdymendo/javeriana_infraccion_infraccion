@@ -1,20 +1,21 @@
 package com.fdymendo.javeriana.infracciones.controller
 
 import com.fdymendo.javeriana.infracciones.dto.InfractionDTO
+import com.fdymendo.javeriana.infracciones.dto.UserDTO
 import com.fdymendo.javeriana.infracciones.service.IInfractionService
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
 @RestController
 @RequestMapping("/infraccion/v1")
-class InfractionController(val iUserService: IInfractionService) {
+class InfractionController(val iInfractionService: IInfractionService) {
 
     @GetMapping("/{id}")
-    fun getInfraction(@PathVariable("id") id: String) = iUserService.getItem(id)
+    fun getInfraction(@PathVariable("id") id: String) = iInfractionService.getItem(id)
+    @GetMapping("/user")
+    fun getInfractionByUser(@RequestParam cc: String, @RequestParam td: String) = iInfractionService.infracctionByUser(cc, td)
 
-    @PostMapping
-    fun saveInfraction(@RequestBody infraction: InfractionDTO) = iUserService.saveItem(infraction)
     @PostMapping("/placa")
-    fun saveInfractionPlate(@RequestBody infraction: InfractionDTO) = iUserService.saveItemPlate(infraction)
+    fun saveInfractionPlate(@RequestBody infraction: InfractionDTO) = iInfractionService.saveItemPlate(infraction)
 
 }
