@@ -1,6 +1,8 @@
 server:
   port: 8081
 spring:
+  jackson:
+    default-property-inclusion: NON_NULL
   jpa:
     database: mysql
     hibernate:
@@ -18,3 +20,4 @@ api:
         path:
           create: /usuarios/v1
           getUser: /usuarios/v1
+

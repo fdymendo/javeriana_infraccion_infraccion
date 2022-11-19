@@ -1,5 +1,6 @@
 package com.fdymendo.javeriana.infracciones.service.impl
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fdymendo.javeriana.infracciones.dto.*
 import com.fdymendo.javeriana.infracciones.entity.*
 import com.fdymendo.javeriana.infracciones.handlers.ApplicationException
@@ -12,6 +13,7 @@ import com.fdymendo.javeriana.infracciones.repository.VehicleRepository
 import com.fdymendo.javeriana.infracciones.service.ACrudServiceTemplate
 import com.fdymendo.javeriana.infracciones.service.IInfractionService
 import com.fdymendo.javeriana.infracciones.utils.GenericMethods
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
@@ -22,6 +24,7 @@ import org.springframework.web.client.RestTemplate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
+import java.util.stream.Collectors
 
 
 @Service
@@ -37,6 +40,9 @@ class InfractionServiceImpl(
 
 ) :
     ACrudServiceTemplate<InfractionRepository, InfractionEntity>(infractionRepository), IInfractionService {
+    companion object {
+    val logger = LoggerFactory.getLogger(InfractionServiceImpl::class.java)
+    }
 
     override fun saveItem(item: InfractionDTO): ResponseEntity<ResponseDefault> {
 
@@ -47,7 +53,7 @@ class InfractionServiceImpl(
         itemToSave.updateDate = Date()
 
         this.infractionRepository.save(itemToSave)
-        return GenericMethods.responseOk(ResponseDefault(itemToSave.toDTO(), null))
+        return GenericMethods.responseOk(ResponseDefault(mutableListOf(itemToSave.toDTO()), null))
     }
 
     override fun saveItemPlate(item: InfractionDTO): ResponseEntity<ResponseDefault> {
@@ -74,14 +80,14 @@ class InfractionServiceImpl(
             updateDate = Date()
         )
         this.infractionRepository.save(itemToSave)
-        return GenericMethods.responseOk(ResponseDefault(itemToSave.toDTO(), null))
+        return GenericMethods.responseOk(ResponseDefault(mutableListOf(itemToSave.toDTO()), null))
     }
 
     override fun getItem(id: String): ResponseEntity<ResponseDefault> {
 
         this.infractionRepository.getReferenceById(id).toDTO().let {
             it.user = it.vehicle.userId?.let { it1 -> getPersonById(it1).toDTO() }
-            return GenericMethods.responseOk(ResponseDefault(it, null))
+            return GenericMethods.responseOk(ResponseDefault(mutableListOf(it), null))
         }
 
     }
@@ -137,4 +143,37 @@ class InfractionServiceImpl(
             throw ApplicationException(null, HttpStatus.NOT_FOUND.reasonPhrase, HttpStatus.SERVICE_UNAVAILABLE)
         }
     }
+
+    override fun infracctionByUser(cc: String, td: String): ResponseEntity<ResponseDefault> {
+
+        logger.info("Search infracction cc: $cc and td: $td")
+
+        val person = getPerson(cc = cc, td = td)
+        val infractions = mutableListOf<InfractionDTO>()
+
+        person.id?.let { personId ->
+            val vehicles = this.vehicleRepository.getByUserId(personId)
+
+            vehicles?.forEach { vehicle ->
+                this.infractionRepository.getByVehicle(vehicle).let { infractionsEntity ->
+                    infractions.addAll(infractionsEntity.stream().map { entity -> entity.toDTO() }
+                        .collect(Collectors.toList()))
+                }
+            }
+        }
+        return GenericMethods.responseOk(ResponseDefault(infractions, null))
+    }
+
+    private fun getPerson(cc: String, td: String) = getPerson(
+        UserDTO(
+            id = null,
+            name = "",
+            surname = "",
+            email = "",
+            typeDocument = td,
+            document = cc,
+        )
+    )
+
+
 }
