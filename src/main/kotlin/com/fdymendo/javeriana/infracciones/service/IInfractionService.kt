@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity
 
 interface IInfractionService : ICrudTemplate<InfractionDTO> {
     fun saveItemPlate(item: InfractionDTO): ResponseEntity<ResponseDefault>
+    fun infracctionByUser(cc: String, td: String): ResponseEntity<ResponseDefault>
+
 }

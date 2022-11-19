@@ -18,20 +18,12 @@ import javax.persistence.EntityNotFoundException
 class ApplicationHandler {
 
     companion object {
-
         val log: Logger = LoggerFactory.getLogger(ApplicationHandler::class.java)
-
-    }
-
-    @ExceptionHandler(Exception::class)
-    fun exceptionFound(ex: Exception, request: WebRequest): ResponseEntity<ResponseError> {
-        log.error(ex.message)
-        return GenericMethods.responseError500(HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase)
     }
 
     @ExceptionHandler(ApplicationException::class)
     fun exceptionFound(ex: ApplicationException, request: WebRequest): ResponseEntity<ResponseError> {
-        log.error(ex.message)
+        log.error("Application Exception $ex.message", ex)
         return GenericMethods.genericResponse(ex)
     }
 
@@ -40,16 +32,16 @@ class ApplicationHandler {
         ex: EmptyResultDataAccessException,
         request: WebRequest?
     ): ResponseEntity<ResponseDefault> {
-        log.warn(ex.message)
+        log.warn(ex.message, ex)
         return GenericMethods.responseBadRequest()
     }
 
-    @ExceptionHandler(EntityNotFoundException::class)
-    fun exceptionNotFoundItem(
-        ex: EntityNotFoundException,
-        request: WebRequest?
-    ): ResponseEntity<ResponseDefault> {
-        log.warn(ex.message)
-        return GenericMethods.responseBadRequest()
+    @ExceptionHandler(Exception::class)
+    fun exceptionFound(ex: Exception, request: WebRequest) = when (ex.cause) {
+        is EntityNotFoundException -> GenericMethods.responseNotFound()
+        else -> {
+            log.error("Not Controlled error $ex", ex)
+            GenericMethods.responseError500(HttpStatus.INTERNAL_SERVER_ERROR.reasonPhrase)
+        }
     }
 }

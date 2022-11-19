@@ -25,7 +25,7 @@ class VehicleServiceImpl(private val vehicleRepository: VehicleRepository) :
         item.updateDate = null
         val itemToSave = item.toEntity()
         vehicleRepository.save(itemToSave)
-        return GenericMethods.responseOk(ResponseDefault(null, itemToSave.toDTO()))
+        return GenericMethods.responseOk(ResponseDefault(listOf(), itemToSave.toDTO()))
     }
 
     override fun updateItem(item: VehicleDTO, id: String): ResponseEntity<ResponseDefault> {

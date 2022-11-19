@@ -18,9 +18,8 @@ class GenericMethods {
             return ResponseEntity.ok(responseDefault)
         }
 
-        fun responseNotFound(): ResponseEntity<ResponseDefault> {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
-        }
+        fun responseNotFound() = ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseDefault(listOf(), null))
+
 
         fun responseError500(message: String): ResponseEntity<ResponseError> {
             return ResponseEntity.internalServerError().body(ResponseError(message))
