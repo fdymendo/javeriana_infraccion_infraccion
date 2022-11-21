@@ -13,6 +13,7 @@ import com.fdymendo.javeriana.infracciones.repository.VehicleRepository
 import com.fdymendo.javeriana.infracciones.service.ACrudServiceTemplate
 import com.fdymendo.javeriana.infracciones.service.IInfractionService
 import com.fdymendo.javeriana.infracciones.utils.GenericMethods
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
@@ -41,10 +42,11 @@ class InfractionServiceImpl(
 ) :
     ACrudServiceTemplate<InfractionRepository, InfractionEntity>(infractionRepository), IInfractionService {
     companion object {
-    val logger = LoggerFactory.getLogger(InfractionServiceImpl::class.java)
+        val logger: Logger = LoggerFactory.getLogger(InfractionServiceImpl::class.java)
     }
 
     override fun saveItem(item: InfractionDTO): ResponseEntity<ResponseDefault> {
+        logger.info("saveItem $item")
 
         var itemToSave = item.toEntity()
         itemToSave.id = UUID.randomUUID().toString();
@@ -57,6 +59,7 @@ class InfractionServiceImpl(
     }
 
     override fun saveItemPlate(item: InfractionDTO): ResponseEntity<ResponseDefault> {
+        logger.info("saveItemPlate $item")
         val vehicle = validateVehicle(item.vehicle, item.user!!)
         //buscar parkinglot
         val itemToSave = InfractionEntity(
@@ -84,6 +87,7 @@ class InfractionServiceImpl(
     }
 
     override fun getItem(id: String): ResponseEntity<ResponseDefault> {
+        logger.info("getItem $id")
 
         this.infractionRepository.getReferenceById(id).toDTO().let {
             it.user = it.vehicle.userId?.let { it1 -> getPersonById(it1).toDTO() }
@@ -104,12 +108,15 @@ class InfractionServiceImpl(
     private fun generateExpiration() = Date.from(LocalDateTime.now().plusDays(1L).toInstant(ZoneOffset.UTC))
 
     private fun validateVehicle(vehicleDTO: VehicleDTO, userDTO: UserDTO): VehicleEntity {
+        logger.info("validateVehicle $vehicleDTO, $userDTO")
         val person = getPerson(userDTO)
         return getVehicle(vehicleDTO, person.toDTO())
 
     }
 
     private fun getPerson(userDTO: UserDTO): UserResponse {
+        logger.info("getPerson $userDTO")
+
         val urlGet = "${ip}${pathGet}?cc=${userDTO.document}&td=${userDTO.typeDocument}"
         val urlPost = "${ip}${pathCreate}?cc=${userDTO.document}&td=${userDTO.typeDocument}"
 
@@ -124,6 +131,7 @@ class InfractionServiceImpl(
     }
 
     private fun getVehicle(vehicleDTO: VehicleDTO, userDTO: UserDTO): VehicleEntity {
+        logger.info("getVehicle $vehicleDTO, $userDTO")
         val vehicleEntity = vehicleRepository.getByPlate(vehicleDTO.plate)
         vehicleEntity?.let {
             return it
@@ -133,6 +141,7 @@ class InfractionServiceImpl(
     }
 
     private fun getPersonById(id: String): UserResponse {
+        logger.info("getPersonById $id")
 
         val urlGetId = "${ip}${pathGet}/${id}"
 
@@ -147,13 +156,13 @@ class InfractionServiceImpl(
     override fun infracctionByUser(cc: String, td: String): ResponseEntity<ResponseDefault> {
 
         logger.info("Search infracction cc: $cc and td: $td")
-
+        println("Search infracction cc: $cc and td: $td")
         val person = getPerson(cc = cc, td = td)
         val infractions = mutableListOf<InfractionDTO>()
 
         person.id?.let { personId ->
+            println("Search infracction getByUserId $personId")
             val vehicles = this.vehicleRepository.getByUserId(personId)
-
             vehicles?.forEach { vehicle ->
                 this.infractionRepository.getByVehicle(vehicle).let { infractionsEntity ->
                     infractions.addAll(infractionsEntity.stream().map { entity -> entity.toDTO() }
@@ -174,6 +183,5 @@ class InfractionServiceImpl(
             document = cc,
         )
     )
-
 
 }
