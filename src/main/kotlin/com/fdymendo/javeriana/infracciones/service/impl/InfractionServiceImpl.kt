@@ -1,6 +1,5 @@
 package com.fdymendo.javeriana.infracciones.service.impl
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fdymendo.javeriana.infracciones.dto.*
 import com.fdymendo.javeriana.infracciones.entity.*
 import com.fdymendo.javeriana.infracciones.handlers.ApplicationException
