@@ -35,6 +35,14 @@
           {
             "name": "MYSQL_PWD",
             "value": "CarroyaRecargado"
+          },
+          {
+            "name": "SER_USER_IP",
+            "value": "http://usuarios.eaesof.prod.local"
+          },
+          {
+            "name": "SER_USER_PORT",
+            "value": "8080"
           }
         ],
         "mountPoints": [],
